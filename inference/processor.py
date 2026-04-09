@@ -275,17 +275,19 @@ def batch_process_documents(
     Process documents in mini-batches.
     task: classify | extract_entities | summarize
     """
-    _ = batch_size  # kept for API compatibility
     proc = processor or LegalDocumentProcessor()
     results = []
-    for doc in documents:
+    if batch_size <= 0:
+        raise ValueError("batch_size must be > 0")
+    summarizer = DocumentSummarizer(proc) if task == "summarize" else None
+    for i in range(0, len(documents), batch_size):
+        chunk = documents[i:i + batch_size]
         if task == "classify":
-            results.append(proc.classify_document(doc, return_proba=True))
+            results.extend([proc.classify_document(doc, return_proba=True) for doc in chunk])
         elif task == "extract_entities":
-            results.append(proc.extract_entities(doc, group_by_type=True))
+            results.extend([proc.extract_entities(doc, group_by_type=True) for doc in chunk])
         elif task == "summarize":
-            summary = DocumentSummarizer(proc).get_document_summary(doc)
-            results.append(summary)
+            results.extend([summarizer.get_document_summary(doc) for doc in chunk])
         else:
             raise ValueError(f"Unsupported task: {task}")
     return results

@@ -19,9 +19,9 @@ class LegalEntityRecognizer:
     Identifies legal entities in documents
     """
     
-    def __init__(self, model_name: str = None, num_labels: int = len(config.NER_TAGS), device: str = None):
+    def __init__(self, model_name: str = None, num_labels: int = None, device: str = None):
         self.model_name = model_name or config.DEFAULT_MODEL
-        self.num_labels = num_labels
+        self.num_labels = num_labels or len(config.NER_TAGS)
         self.device = device or ("cuda" if torch.cuda.is_available() else "cpu")
         
         # Tag mappings
@@ -33,7 +33,7 @@ class LegalEntityRecognizer:
         self.tokenizer = AutoTokenizer.from_pretrained(self.model_name)
         self.model = AutoModelForTokenClassification.from_pretrained(
             self.model_name,
-            num_labels=num_labels
+            num_labels=self.num_labels
         )
         self.model.to(self.device)
     
@@ -140,8 +140,9 @@ class AttentionNERModel(nn.Module):
     Enhanced NER model with attention mechanism
     """
     
-    def __init__(self, model_name: str, num_labels: int = len(config.NER_TAGS), dropout: float = 0.1):
+    def __init__(self, model_name: str, num_labels: int = None, dropout: float = 0.1):
         super().__init__()
+        num_labels = num_labels or len(config.NER_TAGS)
         self.bert = AutoModelForTokenClassification.from_pretrained(
             model_name,
             num_labels=num_labels
