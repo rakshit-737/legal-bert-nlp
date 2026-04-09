@@ -1,13 +1,55 @@
 theme: jekyll-theme-minimal
-title: Legal BERT NLP
-description: Advanced NLP for Legal Documents - Powered by BERT
+title: ⚖️ Legal BERT NLP - Advanced Legal Document Analysis
+description: Professional AI-Powered Legal Document Analysis with Legal-BERT | Classification • NER • Similarity • Summarization
 show_downloads: false
-google_analytics: 
+
+# Navigation
+nav_links:
+  - title: Live App
+    url: https://legal-bert-nlp.streamlit.app
+  - title: GitHub
+    url: https://github.com/rakshit-737/legal-bert-nlp
+  - title: Docs
+    url: /legal-bert-nlp/
+
+# Plugins
 plugins:
   - jekyll-sitemap
   - jekyll-seo-tag
 
-# Metadata
-author: Your Name
-repository: YOUR_USERNAME/legal-bert-nlp
-url: https://YOUR_USERNAME.github.io/legal-bert-nlp
+# SEO & Analytics
+google_analytics: 
+author: Legal BERT NLP Community
+repository: rakshit-737/legal-bert-nlp
+github_user: rakshit-737
+url: https://rakshit-737.github.io/legal-bert-nlp
+
+# Build configuration
+markdown: kramdown
+kramdown:
+  input: GFM
+  hard_wrap: false
+highlighter: rouge
+
+# Exclude from processing
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor/bundle/
+  - vendor/cache/
+  - vendor/gems/
+  - vendor/ruby/
+  - .git/
+  - .gitignore
+
+# Twitter metadata
+twitter:
+  username: YOUR_TWITTER_HANDLE
+  
+# Social sharing
+social:
+  name: Legal BERT NLP
+  links:
+    - https://github.com/rakshit-737/legal-bert-nlp
+    - https://legal-bert-nlp.streamlit.app
