@@ -215,7 +215,9 @@ class LegalDocumentProcessor:
         If return_proba=True, includes `all_scores` with per-class probabilities.
         """
         result = self.classify(text)
-        if not return_proba:
+        if return_proba:
+            result.setdefault("all_scores", {})
+        else:
             result = {
                 "label": result["label"],
                 "confidence": result["confidence"],
