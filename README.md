@@ -4,13 +4,13 @@
 
 > Fine-tuned BERT models purpose-built for legal document intelligence: classify documents, extract named entities, compute semantic similarity, and generate intelligent summaries.
 
+> **⚠️ After deploying:** update the badge URLs below with your actual Streamlit app URL and GitHub username.
+
 [![Live App](https://img.shields.io/badge/Streamlit-Live%20App-FF4B4B?logo=streamlit&logoColor=white)](https://legal-bert-nlp.streamlit.app)
 [![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Landing%20Page-0c2461?logo=github)](https://rakshit-737.github.io/legal-bert-nlp)
 [![Status](https://img.shields.io/badge/status-active-success)](.)
 [![Python](https://img.shields.io/badge/python-3.9%2B-blue)](.)
 [![CUDA](https://img.shields.io/badge/GPU-CUDA%20Ready-brightgreen)](.)
-
-> **⚠️ Update the badge URLs above** once you have deployed the Streamlit app and enabled GitHub Pages.
 
 ---
 
