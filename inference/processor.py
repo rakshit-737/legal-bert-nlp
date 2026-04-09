@@ -216,7 +216,8 @@ class LegalDocumentProcessor:
         """
         result = self.classify(text)
         if return_proba:
-            result.setdefault("all_scores", {})
+            if "all_scores" not in result:
+                result["all_scores"] = {}
         else:
             result = {
                 "label": result["label"],

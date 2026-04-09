@@ -107,7 +107,11 @@ class LegalSemanticSimilarity:
         # Use scipy for efficient connected component clustering
         try:
             # Create adjacency matrix from similarity
-            adjacency_np = (sim_matrix >= threshold).astype(float)
+            adjacency = (sim_matrix >= threshold)
+            if hasattr(adjacency, "cpu"):
+                adjacency_np = adjacency.float().cpu().numpy()
+            else:
+                adjacency_np = adjacency.astype(float)
             
             # Find connected components
             graph = csr_matrix(adjacency_np)
