@@ -1,0 +1,13 @@
+theme: jekyll-theme-minimal
+title: Legal BERT NLP
+description: Advanced NLP for Legal Documents - Powered by BERT
+show_downloads: false
+google_analytics: 
+plugins:
+  - jekyll-sitemap
+  - jekyll-seo-tag
+
+# Metadata
+author: Your Name
+repository: YOUR_USERNAME/legal-bert-nlp
+url: https://YOUR_USERNAME.github.io/legal-bert-nlp
