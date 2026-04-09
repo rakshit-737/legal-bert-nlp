@@ -140,11 +140,11 @@ class LegalDocumentProcessor:
         entities = extract_entities(text)
         if group_by_type:
             return entities
-        flat = []
-        for entity_type, items in entities.items():
-            for item in items:
-                flat.append((item, entity_type))
-        return flat
+        return [
+            (item, entity_type)
+            for entity_type, items in entities.items()
+            for item in items
+        ]
 
     # ── similarity ────────────────────────────────────────────────────────────
 
