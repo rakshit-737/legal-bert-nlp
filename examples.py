@@ -10,7 +10,7 @@ import sys
 sys.path.insert(0, str(Path(__file__).parent))
 
 import config
-from preprocessing.data_loader import load_legal_dataset, prepare_classification_dataset, create_dummy_dataset
+from preprocessing.data_loader import get_splits
 from training.train_classifier import TrainingPipeline
 from models.classification_model import LegalDocumentClassifier
 from evaluation.metrics import EvaluationMetrics
@@ -95,23 +95,12 @@ def example_3_training():
     print("EXAMPLE 3: Model Training")
     print("="*60)
     
-    # Load or create dataset
+    # Load dataset
     print("\n📚 Loading dataset...")
-    try:
-        dataset = load_legal_dataset()
-        print(f"✅ Legal dataset loaded")
-    except:
-        print("⚠️  Using dummy dataset for demo")
-        dataset = create_dummy_dataset()
-    
-    # Prepare split
-    train_texts = [doc["text"] for doc in dataset["train"]][:100]
-    train_labels = [doc["label"] for doc in dataset["train"]][:100]
-    val_texts = [doc["text"] for doc in dataset["validation"]][:20]
-    val_labels = [doc["label"] for doc in dataset["validation"]][:20]
-    
-    print(f"  - Train samples: {len(train_texts)}")
-    print(f"  - Val samples: {len(val_texts)}")
+    dataset = get_splits(source="synthetic")
+    print("✅ Synthetic legal dataset loaded")
+    print(f"  - Train samples: {len(dataset['train']['text'])}")
+    print(f"  - Val samples: {len(dataset['validation']['text'])}")
     
     # Initialize training pipeline
     print("\n🎯 Initializing training pipeline...")
@@ -122,23 +111,15 @@ def example_3_training():
     
     # Train
     print("\n🏋️ Training model (this may take a while)...")
-    classifier, history = pipeline.train(
-        train_texts=train_texts,
-        train_labels=train_labels,
-        val_texts=val_texts,
-        val_labels=val_labels,
+    metrics = pipeline.run(
+        source="synthetic",
         num_epochs=3,
         learning_rate=2e-5,
         batch_size=8
     )
     
     print("\n✅ Training complete!")
-    print(f"  - Best F1 Score: {max(history['eval_f1']):.4f}")
-    
-    # Save model
-    print("\n💾 Saving model...")
-    pipeline.save_model("./results/trained_model")
-    print("  - Model saved to ./results/trained_model")
+    print(f"  - Test F1 Score: {metrics['f1']:.4f}")
 
 
 def example_4_evaluation():
@@ -273,7 +254,7 @@ def main():
     print("="*70)
     print("\n📚 Next steps:")
     print("  1. Run: streamlit run app/streamlit_app.py (for UI)")
-    print("  2. Train on your data with example_3_training()"))
+    print("  2. Train on your data with example_3_training()")
     print("  3. Customize models in models/ directory")
     print("  4. Check app/streamlit_app.py for interactive interface")
     print("\n")

@@ -1,16 +1,21 @@
-torch==2.0.1
-transformers==4.30.2
-datasets==2.13.0
-scikit-learn==1.3.0
-pandas==2.0.3
-numpy==1.24.3
-matplotlib==3.7.2
-seaborn==0.12.2
-streamlit==1.26.0
-pdfplumber==0.9.0
-pytesseract==0.3.10
-sentence-transformers==2.2.2
-accelerate==0.20.3
-evaluate==0.4.0
-python-dotenv==1.0.0
-tqdm==4.65.0
+streamlit
+# Core ML stack (let pip pick versions compatible with Streamlit Cloud's Python)
+torch
+transformers
+sentence-transformers
+accelerate
+datasets
+evaluate
+# Utilities
+python-dotenv
+tqdm
+# Optional/feature dependencies
+pandas
+numpy
+matplotlib
+seaborn
+pdfplumber
+pytesseract
+# scikit-learn is only used for TF-IDF fallback + some eval scripts; avoid it on Streamlit Cloud
+# because it may require compilation under newer Python versions.
+# scikit-learn
