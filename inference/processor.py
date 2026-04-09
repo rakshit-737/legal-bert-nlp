@@ -210,7 +210,10 @@ class LegalDocumentProcessor:
             return " ".join(sentences[:num_sentences])
 
     def classify_document(self, text: str, return_proba: bool = False) -> Dict:
-        """Backward-compatible classifier entrypoint."""
+        """
+        Backward-compatible classifier entrypoint.
+        If return_proba=True, includes `all_scores` with per-class probabilities.
+        """
         result = self.classify(text)
         if not return_proba:
             result = {

@@ -51,7 +51,7 @@ class LegalEntityRecognizer:
         )
         
         labels = []
-        word_ids = tokenized_inputs.word_ids(batch_index=0)
+        word_ids = tokenized_inputs.word_ids()
         
         previous_word_idx = None
         for word_idx in word_ids:
@@ -84,7 +84,7 @@ class LegalEntityRecognizer:
             truncation=True,
             return_tensors="pt"
         )
-        word_ids = encoded.word_ids(batch_index=0)
+        word_ids = encoded.word_ids()
         inputs = {k: v.to(self.device) for k, v in encoded.items()}
         
         self.model.eval()
