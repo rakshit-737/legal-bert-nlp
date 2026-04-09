@@ -21,7 +21,7 @@ class LegalEntityRecognizer:
     
     def __init__(self, model_name: str = None, num_labels: int = None, device: str = None):
         self.model_name = model_name or config.DEFAULT_MODEL
-        self.num_labels = num_labels or len(config.NER_TAGS)
+        self.num_labels = num_labels or len(config.TAG_TO_ID)
         self.device = device or ("cuda" if torch.cuda.is_available() else "cpu")
         
         # Tag mappings
@@ -142,7 +142,7 @@ class AttentionNERModel(nn.Module):
     
     def __init__(self, model_name: str, num_labels: int = None, dropout: float = 0.1):
         super().__init__()
-        num_labels = num_labels or len(config.NER_TAGS)
+        num_labels = num_labels or len(config.TAG_TO_ID)
         self.bert = AutoModelForTokenClassification.from_pretrained(
             model_name,
             num_labels=num_labels

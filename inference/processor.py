@@ -278,10 +278,10 @@ def batch_process_documents(
     Process documents in mini-batches.
     task: classify | extract_entities | summarize
     """
-    proc = processor or LegalDocumentProcessor()
-    results = []
     if batch_size <= 0:
         raise ValueError("batch_size must be > 0")
+    proc = processor or LegalDocumentProcessor()
+    results = []
     summarizer = DocumentSummarizer(proc) if task == "summarize" else None
     for i in range(0, len(documents), batch_size):
         chunk = documents[i:i + batch_size]
