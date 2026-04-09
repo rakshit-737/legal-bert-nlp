@@ -19,14 +19,14 @@ class LegalEntityRecognizer:
     Identifies legal entities in documents
     """
     
-    def __init__(self, model_name: str = None, num_labels: int = 11, device: str = None):
+    def __init__(self, model_name: str = None, num_labels: int = len(config.NER_TAGS), device: str = None):
         self.model_name = model_name or config.DEFAULT_MODEL
         self.num_labels = num_labels
         self.device = device or ("cuda" if torch.cuda.is_available() else "cpu")
         
         # Tag mappings
-        self.tag_to_id = config.NER_TAGS
-        self.id_to_tag = {v: k for k, v in self.tag_to_id.items()}
+        self.tag_to_id = config.TAG_TO_ID
+        self.id_to_tag = config.ID_TO_TAG
         
         # Load model
         print(f"Loading NER model: {self.model_name}")
@@ -51,7 +51,7 @@ class LegalEntityRecognizer:
         )
         
         labels = []
-        word_ids = tokenized_inputs.word_ids()
+        word_ids = tokenized_inputs.word_ids(batch_index=0)
         
         previous_word_idx = None
         for word_idx in word_ids:
@@ -76,7 +76,7 @@ class LegalEntityRecognizer:
         tokens = text.split()
         
         # Convert to inputs
-        inputs = self.tokenizer(
+        encoded = self.tokenizer(
             tokens,
             is_split_into_words=True,
             max_length=512,
@@ -84,8 +84,8 @@ class LegalEntityRecognizer:
             truncation=True,
             return_tensors="pt"
         )
-        
-        inputs = {k: v.to(self.device) for k, v in inputs.items()}
+        word_ids = encoded.word_ids(batch_index=0)
+        inputs = {k: v.to(self.device) for k, v in encoded.items()}
         
         self.model.eval()
         with torch.no_grad():
@@ -95,7 +95,6 @@ class LegalEntityRecognizer:
             probabilities = torch.softmax(logits, dim=2)[0]
         
         # Extract entities
-        word_ids = inputs.word_ids()
         entities = []
         
         for idx, word_idx in enumerate(word_ids):
@@ -141,7 +140,7 @@ class AttentionNERModel(nn.Module):
     Enhanced NER model with attention mechanism
     """
     
-    def __init__(self, model_name: str, num_labels: int = 11, dropout: float = 0.1):
+    def __init__(self, model_name: str, num_labels: int = len(config.NER_TAGS), dropout: float = 0.1):
         super().__init__()
         self.bert = AutoModelForTokenClassification.from_pretrained(
             model_name,
