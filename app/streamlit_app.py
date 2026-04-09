@@ -7,6 +7,10 @@ import torch
 import sys
 import os
 from pathlib import Path
+import pandas as pd
+import PyPDF2
+from io import BytesIO
+import docx
 
 # Add parent to path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent))
@@ -16,14 +20,21 @@ from inference.processor import LegalDocumentProcessor, DocumentSummarizer, batc
 from preprocessing.text_cleaner import TextCleaner
 
 
-# Page configuration
+# Page configuration with premium styling
 st.set_page_config(
+<<<<<<< HEAD
     page_title="Legal BERT NLP",
     page_icon="⚖️",
+=======
+    page_title="⚖️ Legal BERT NLP - Professional Document Analysis",
+    page_icon="📜",
+>>>>>>> origin/main
     layout="wide",
-    initial_sidebar_state="expanded"
+    initial_sidebar_state="expanded",
+    menu_items={"About": "Legal BERT NLP - Advanced NLP for Legal Documents"}
 )
 
+<<<<<<< HEAD
 # ── Design system ──────────────────────────────────────────────────────────────
 st.markdown("""
 <style>
@@ -201,6 +212,415 @@ st.markdown("""
   #MainMenu { visibility: hidden; }
   footer    { visibility: hidden; }
   header    { visibility: hidden; }
+=======
+# Prevent rerun on page load
+if 'last_tab' not in st.session_state:
+    st.session_state.last_tab = None
+
+# Premium design system with advanced UI and animations
+st.markdown("""
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
+    
+    :root {
+        --primary: #0F3460;
+        --primary-light: #1a4d7a;
+        --secondary: #533483;
+        --accent: #00D9FF;
+        --success: #10b981;
+        --warning: #f59e0b;
+        --error: #ef4444;
+        --neutral-50: #f9fafb;
+        --neutral-100: #f3f4f6;
+        --neutral-200: #e5e7eb;
+        --neutral-700: #374151;
+        --neutral-900: #111827;
+    }
+    
+    * {
+        font-family: 'Inter', -apple-system, sans-serif;
+    }
+    
+    code {
+        font-family: 'JetBrains Mono', monospace !important;
+    }
+    
+    /* Enhanced Animation Library */
+    @keyframes fadeInSlide {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    @keyframes slideInLeft {
+        from {
+            opacity: 0;
+            transform: translateX(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+    
+    @keyframes pulse {
+        0%, 100% {
+            opacity: 1;
+        }
+        50% {
+            opacity: 0.7;
+        }
+    }
+    
+    @keyframes shimmer {
+        0% {
+            background-position: -1000px 0;
+        }
+        100% {
+            background-position: 1000px 0;
+        }
+    }
+    
+    @keyframes glow {
+        0%, 100% {
+            box-shadow: 0 0 5px rgba(0, 217, 255, 0.5);
+        }
+        50% {
+            box-shadow: 0 0 20px rgba(0, 217, 255, 0.8);
+        }
+    }
+    
+    @keyframes bounce {
+        0%, 100% {
+            transform: translateY(0);
+        }
+        50% {
+            transform: translateY(-8px);
+        }
+    }
+    
+    /* Main Header Styling */
+    .main-header {
+        font-size: 3.5em;
+        font-weight: 700;
+        background: linear-gradient(135deg, #0F3460 0%, #533483 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-align: center;
+        margin-bottom: 0.25em;
+        letter-spacing: -1.5px;
+        animation: fadeInSlide 0.6s ease-out;
+    }
+    
+    .subheader-text {
+        text-align: center;
+        font-size: 1.2em;
+        color: #6b7280;
+        margin-bottom: 2em;
+        font-weight: 500;
+        animation: fadeInSlide 0.7s ease-out 0.1s both;
+    }
+    
+    /* Section Headers */
+    .section-header {
+        font-size: 2em;
+        font-weight: 700;
+        color: #0F3460;
+        border-bottom: 3px solid #00D9FF;
+        padding-bottom: 0.75em;
+        margin: 2em 0 1.5em 0;
+        display: inline-block;
+        animation: slideInLeft 0.5s ease-out;
+    }
+    
+    /* Metric and Info Boxes */
+    .metric-box {
+        background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+        padding: 2em;
+        border-radius: 12px;
+        margin: 1.2em 0;
+        border: 1px solid #e5e7eb;
+        transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        animation: fadeInSlide 0.5s ease-out;
+    }
+    
+    .metric-box:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 24px rgba(15, 52, 96, 0.12);
+        border-color: #00D9FF;
+    }
+    
+    .entity-box {
+        background: linear-gradient(135deg, #f0f9ff 0%, #ede9fe 100%);
+        padding: 1.2em;
+        border-left: 4px solid #00D9FF;
+        margin: 0.8em 0;
+        border-radius: 8px;
+        transition: all 0.2s ease;
+        animation: slideInLeft 0.4s ease-out;
+    }
+    
+    .entity-box:hover {
+        border-left-color: #533483;
+        background: linear-gradient(135deg, #e0f2fe 0%, #ede9fe 100%);
+        transform: translateX(4px);
+        box-shadow: 0 4px 12px rgba(83, 52, 131, 0.15);
+    }
+    
+    /* Alert Messages */
+    .success-message {
+        background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+        color: #065f46;
+        padding: 1.2em;
+        border-radius: 8px;
+        border-left: 4px solid #10b981;
+        font-weight: 500;
+        animation: fadeInSlide 0.4s ease-out;
+    }
+    
+    .error-message {
+        background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+        color: #7f1d1d;
+        padding: 1.2em;
+        border-radius: 8px;
+        border-left: 4px solid #ef4444;
+        font-weight: 500;
+        animation: fadeInSlide 0.4s ease-out;
+    }
+    
+    .info-message {
+        background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+        color: #0c2d6b;
+        padding: 1.2em;
+        border-radius: 8px;
+        border-left: 4px solid #3b82f6;
+        font-weight: 500;
+        animation: fadeInSlide 0.4s ease-out;
+    }
+    
+    .warning-message {
+        background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+        color: #78350f;
+        padding: 1.2em;
+        border-radius: 8px;
+        border-left: 4px solid #f59e0b;
+        font-weight: 500;
+        animation: fadeInSlide 0.4s ease-out;
+    }
+    
+    /* Task Labels and Controls */
+    .task-label {
+        font-size: 1.1em;
+        font-weight: 600;
+        color: #0F3460;
+        margin: 1.5em 0 0.75em 0;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        font-size: 0.85em;
+    }
+    
+    /* Upload Boxes */
+    .upload-box {
+        border: 2px dashed #00D9FF;
+        border-radius: 12px;
+        padding: 2em;
+        text-align: center;
+        background: linear-gradient(135deg, rgba(0, 217, 255, 0.05) 0%, rgba(83, 52, 131, 0.05) 100%);
+        transition: all 0.3s ease;
+        animation: fadeInSlide 0.5s ease-out;
+    }
+    
+    .upload-box:hover {
+        border-color: #533483;
+        background: linear-gradient(135deg, rgba(0, 217, 255, 0.1) 0%, rgba(83, 52, 131, 0.1) 100%);
+        box-shadow: 0 0 20px rgba(0, 217, 255, 0.3);
+    }
+    
+    /* Buttons */
+    .button-primary {
+        background: linear-gradient(135deg, #0F3460 0%, #533483 100%) !important;
+        color: white !important;
+        font-weight: 600 !important;
+        border: none !important;
+        border-radius: 8px !important;
+        padding: 0.75em 2em !important;
+        transition: all 0.3s ease !important;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .button-primary:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+        transition: left 0.5s;
+    }
+    
+    .button-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 16px rgba(15, 52, 96, 0.3) !important;
+    }
+    
+    .button-primary:hover:before {
+        left: 100%;
+    }
+    
+    /* Confidence Bars */
+    .confidence-bar {
+        height: 8px;
+        background: #e5e7eb;
+        border-radius: 4px;
+        overflow: hidden;
+        margin: 0.5em 0;
+    }
+    
+    .confidence-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #10b981 0%, #00D9FF 100%);
+        transition: width 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        animation: slideInLeft 0.6s ease-out;
+    }
+    
+    /* Data Table Enhancements */
+    [data-testid="dataframe"] {
+        border-radius: 8px;
+        overflow: hidden;
+    }
+    
+    [data-testid="dataframe"] thead {
+        background: linear-gradient(135deg, #0F3460 0%, #533483 100%);
+        color: white;
+    }
+    
+    [data-testid="dataframe"] tbody tr:hover {
+        background-color: rgba(0, 217, 255, 0.1);
+    }
+    
+    /* Expander Styling */
+    [data-testid="expanderHeader"] {
+        background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+        border-radius: 8px;
+        border: 1px solid #e5e7eb;
+        transition: all 0.2s ease;
+    }
+    
+    [data-testid="expanderHeader"]:hover {
+        background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+        border-color: #00D9FF;
+    }
+    
+    /* Tab Styling */
+    [data-testid="stTabs"] button {
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+    
+    [data-testid="stTabs"] button:hover {
+        color: #00D9FF;
+    }
+    
+    /* Select Box Enhancements */
+    [data-testid="selectbox"] select {
+        border: 2px solid #e5e7eb !important;
+        border-radius: 8px !important;
+        transition: all 0.2s ease !important;
+    }
+    
+    [data-testid="selectbox"] select:hover {
+        border-color: #00D9FF !important;
+    }
+    
+    [data-testid="selectbox"] select:focus {
+        border-color: #0F3460 !important;
+        box-shadow: 0 0 0 3px rgba(15, 52, 96, 0.1) !important;
+    }
+    
+    /* Text Input Enhancements */
+    [data-testid="textinput"] input,
+    [data-testid="stTextArea"] textarea {
+        border: 2px solid #e5e7eb !important;
+        border-radius: 8px !important;
+        transition: all 0.2s ease !important;
+    }
+    
+    [data-testid="stTextArea"] textarea {
+        min-height: 120px !important;
+    }
+    
+    [data-testid="textinput"] input:hover,
+    [data-testid="stTextArea"] textarea:hover {
+        border-color: #00D9FF !important;
+    }
+    
+    [data-testid="textinput"] input:focus,
+    [data-testid="stTextArea"] textarea:focus {
+        border-color: #0F3460 !important;
+        box-shadow: 0 0 0 3px rgba(15, 52, 96, 0.1) !important;
+    }
+    
+    /* Slider Enhancements */
+    [data-testid="slider"] {
+        margin: 2em 0;
+    }
+    
+    /* Checkbox Enhancements */
+    [data-testid="checkbox"] {
+        transition: all 0.2s ease;
+    }
+    
+    [data-testid="checkbox"]:hover {
+        transform: scale(1.05);
+    }
+    
+    /* Spinner Animation */
+    [data-testid="stSpinner"] {
+        animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
+    
+    /* Sidebar Styling */
+    [data-testid="stSidebar"] {
+        background: linear-gradient(180deg, #f9fafb 0%, #f3f4f6 100%);
+    }
+    
+    [data-testid="stSidebar"] [data-testid="baseButton-secondary"] {
+        border-radius: 8px;
+        transition: all 0.2s ease;
+    }
+    
+    [data-testid="stSidebar"] [data-testid="baseButton-secondary"]:hover {
+        background-color: #e5e7eb;
+        transform: translateX(2px);
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .main-header {
+            font-size: 2.5em;
+        }
+        
+        .section-header {
+            font-size: 1.5em;
+        }
+        
+        .metric-box {
+            padding: 1.5em;
+        }
+    }
+>>>>>>> origin/main
 </style>
 """, unsafe_allow_html=True)
 
@@ -238,6 +658,39 @@ SAMPLE_TEXTS = {
 }
 
 
+def extract_text_from_file(uploaded_file):
+    """Extract text from various document types"""
+    file_extension = Path(uploaded_file.name).suffix.lower()
+    
+    try:
+        if file_extension == '.pdf':
+            pdf_reader = PyPDF2.PdfReader(uploaded_file)
+            text = ""
+            for page in pdf_reader.pages:
+                text += page.extract_text()
+            return text
+        
+        elif file_extension == '.docx':
+            doc = docx.Document(uploaded_file)
+            text = "\n".join([para.text for para in doc.paragraphs])
+            return text
+        
+        elif file_extension in ['.txt', '.md']:
+            return uploaded_file.read().decode('utf-8')
+        
+        elif file_extension == '.csv':
+            df = pd.read_csv(uploaded_file)
+            return df.to_string()
+        
+        else:
+            st.error(f"❌ Unsupported file type: {file_extension}")
+            return None
+    
+    except Exception as e:
+        st.error(f"❌ Error reading file: {str(e)[:100]}")
+        return None
+
+
 @st.cache_resource
 def load_models():
     """Load models (cached for performance)"""
@@ -247,14 +700,27 @@ def load_models():
 
 
 def main():
+<<<<<<< HEAD
     # ── App header ──
     st.markdown(
         "<div class='app-header'>"
         "<h1>⚖️ Legal BERT NLP</h1>"
         "<p>AI-powered analysis for legal documents — Classification · NER · Similarity · Summarization</p>"
+=======
+    # Header
+    st.markdown(
+        "<h1 class='main-header'>⚖️ Legal BERT NLP Platform</h1>",
+        unsafe_allow_html=True
+    )
+    
+    st.markdown(
+        "<div class='subheader-text'>"
+        "Professional AI-Powered Legal Document Analysis"
+>>>>>>> origin/main
         "</div>",
         unsafe_allow_html=True,
     )
+<<<<<<< HEAD
 
     # ── Sidebar ──
     st.sidebar.markdown(
@@ -288,9 +754,45 @@ def main():
     )
 
     # ── Load models ──
+=======
+    
+    st.markdown(
+        "<div style='text-align: center; color: #6b7280; font-size: 0.95em; margin-bottom: 2em;'>"
+        "📄 Classification • 🔍 Entity Recognition • 🔗 Similarity • 📊 Summarization • ⚡ Batch Processing"
+        "</div>",
+        unsafe_allow_html=True
+    )
+    
+    # Sidebar configuration
+    st.sidebar.markdown("## ⚙️ Configuration")
+    
+    task = st.sidebar.radio(
+        "Select Your Task:",
+        [
+            "📄 Document Classification",
+            "🔍 Named Entity Recognition",
+            "🔗 Similarity Analysis",
+            "📊 Document Summarization",
+            "⚡ Batch Processing",
+            "📤 Multi-File Upload"
+        ],
+        key="task_selector"
+    )
+    
+    st.sidebar.markdown("---")
+    st.sidebar.markdown("### ⚙️ Display Options")
+    show_metrics = st.sidebar.checkbox("Show detailed metrics", value=True, help="Display additional analysis metrics")
+    show_probabilities = st.sidebar.checkbox("Show confidence scores", value=True, help="Display per-class confidence breakdown")
+    show_raw_output = st.sidebar.checkbox("Show raw model output", value=False, help="Display raw model predictions")
+    
+    st.sidebar.markdown("---")
+    st.sidebar.markdown("### 📋 System Information")
+    
+>>>>>>> origin/main
     try:
         with st.spinner("Loading AI models…"):
             processor = load_models()
+<<<<<<< HEAD
         st.sidebar.success("✅ Models ready")
     except Exception as e:
         st.sidebar.error(f"Model load error: {str(e)[:60]}")
@@ -298,11 +800,32 @@ def main():
             "**Unable to load models.** "
             "Run `pip install -r requirements.txt` and restart."
         )
+=======
+        
+        st.sidebar.success("✅ Models loaded")
+        st.sidebar.markdown(f"""
+        **Model Configuration**
+        - Base Model: {config.DEFAULT_MODEL}
+        - Framework: PyTorch + Transformers
+        - Hardware: {'🚀 GPU (CUDA)' if torch.cuda.is_available() else '💻 CPU'}
+        - Document Types: {len(config.CLASSIFICATION_LABELS)}
+        """)
+    
+    except Exception as e:
+        st.sidebar.error(f"⚠️ Model loading failed")
+        st.error(f"**Unable to load models:** {str(e)[:60]}")
+        st.info("Please ensure all dependencies are installed: `pip install -r requirements.txt`")
+>>>>>>> origin/main
         return
 
     # ── Task routing ──
     if task == "📄 Document Classification":
+<<<<<<< HEAD
         document_classification(processor, show_metrics, show_probabilities)
+=======
+        document_classification(processor, show_metrics, show_probabilities, show_raw_output)
+    
+>>>>>>> origin/main
     elif task == "🔍 Named Entity Recognition":
         named_entity_recognition(processor, show_metrics)
     elif task == "🔗 Similarity Analysis":
@@ -311,6 +834,9 @@ def main():
         document_summarization(processor, show_metrics)
     elif task == "⚡ Batch Processing":
         batch_processing(processor)
+    
+    elif task == "📤 Multi-File Upload":
+        multi_file_upload(processor, show_metrics)
 
 
 def document_classification(processor, show_metrics, show_probabilities):
@@ -837,6 +1363,182 @@ def batch_processing(processor):
 
     except Exception as e:
         st.error(f"**File reading error.** Ensure it is a valid UTF-8 text file. {str(e)[:120]}")
+
+
+def multi_file_upload(processor, show_metrics):
+    """Multi-format file upload and analysis interface"""
+    st.markdown("<h2 class='section-header'>📤 Multi-File Upload & Analysis</h2>", unsafe_allow_html=True)
+    
+    st.markdown(
+        "<div style='background: #f0f7ff; padding: 1em; border-radius: 8px; margin-bottom: 1.5em; border-left: 4px solid #00D9FF;'>"
+        "<strong>💡 Supported Formats:</strong> PDF, DOCX, TXT, CSV, Markdown (MD) - Upload multiple files and analyze them together!"
+        "</div>",
+        unsafe_allow_html=True
+    )
+    
+    # Upload section
+    uploaded_files = st.file_uploader(
+        "Upload legal documents (PDF, DOCX, TXT, CSV, MD):",
+        type=["pdf", "docx", "txt", "csv", "md"],
+        accept_multiple_files=True,
+        help="You can upload multiple files at once. They will be processed individually or together."
+    )
+    
+    if uploaded_files:
+        st.markdown(f"### 📊 Uploaded Files ({len(uploaded_files)})")
+        
+        # Display uploaded files with file info
+        file_info = []
+        extracted_texts = {}
+        
+        col1, col2, col3, col4 = st.columns(4)
+        with col1:
+            st.metric("Total Files", len(uploaded_files))
+        
+        total_chars = 0
+        for uploaded_file in uploaded_files:
+            try:
+                text = extract_text_from_file(uploaded_file)
+                extracted_texts[uploaded_file.name] = text
+                total_chars += len(text)
+                
+                file_info.append({
+                    "Filename": uploaded_file.name,
+                    "Size (KB)": f"{uploaded_file.size / 1024:.1f}",
+                    "Type": Path(uploaded_file.name).suffix.upper()[1:],
+                    "Characters": len(text)
+                })
+            except Exception as e:
+                st.warning(f"⚠️ Could not extract text from {uploaded_file.name}: {str(e)[:80]}")
+        
+        if file_info:
+            with col2:
+                st.metric("Total Size (KB)", f"{sum(f['size'] for f in uploaded_files) / 1024:.1f}" if uploaded_files else "0")
+            with col3:
+                st.metric("Total Characters", total_chars)
+            with col4:
+                st.metric("File Types", len(set(Path(f.name).suffix for f in uploaded_files)))
+            
+            # Show file details table
+            st.markdown("#### File Details")
+            df_files = pd.DataFrame(file_info)
+            st.dataframe(df_files, use_container_width=True, hide_index=True)
+            
+            # Analysis options
+            st.markdown("### ⚙️ Analysis Options")
+            col1, col2 = st.columns(2)
+            
+            with col1:
+                analysis_type = st.selectbox(
+                    "Select analysis type",
+                    ["Classify Each Document", "Extract Entities from All", "Compare Similarity", "Summarize All"]
+                )
+            
+            with col2:
+                combine_documents = st.checkbox(
+                    "Combine all documents", 
+                    value=False,
+                    help="Treat all files as one large document (useful for related legal documents)"
+                )
+            
+            if st.button("🚀 Analyze Files", use_container_width=True):
+                try:
+                    if combine_documents:
+                        # Combine all texts
+                        combined_text = "\n\n--- NEW DOCUMENT ---\n\n".join(
+                            [f"[{name}]\n{text}" for name, text in extracted_texts.items()]
+                        )
+                        
+                        if analysis_type == "Classify Each Document":
+                            with st.spinner("🔄 Classifying combined document..."):
+                                result = processor.classify_document(combined_text)
+                            
+                            st.markdown("### 📋 Combined Classification Result")
+                            col1, col2, col3 = st.columns(3)
+                            with col1:
+                                st.metric("Classification", result['label'].upper())
+                            with col2:
+                                st.metric("Confidence", f"{result['confidence']:.1%}")
+                            with col3:
+                                st.metric("Files Analyzed", len(extracted_texts))
+                            
+                            if show_metrics and 'all_scores' in result:
+                                st.markdown("#### Confidence Breakdown")
+                                scores_df = pd.DataFrame([
+                                    {"Class": k.upper(), "Score": f"{v:.2%}"}
+                                    for k, v in result['all_scores'].items()
+                                ])
+                                st.dataframe(scores_df, hide_index=True)
+                        
+                        elif analysis_type == "Extract Entities from All":
+                            with st.spinner("🔄 Extracting entities..."):
+                                entities = processor.extract_entities(combined_text)
+                            
+                            st.markdown("### 🔍 Extracted Entities")
+                            if entities:
+                                entity_groups = {}
+                                for ent in entities:
+                                    tag = ent.get("entity_type", "OTHER")
+                                    if tag not in entity_groups:
+                                        entity_groups[tag] = []
+                                    entity_groups[tag].append(ent["text"])
+                                
+                                for tag, texts in entity_groups.items():
+                                    with st.expander(f"**{tag}** ({len(texts)})"):
+                                        st.write(", ".join(set(texts)))
+                        
+                        elif analysis_type == "Summarize All":
+                            with st.spinner("🔄 Summarizing documents..."):
+                                summary = processor.summarize_document(combined_text)
+                            
+                            st.markdown("### 📊 Combined Summary")
+                            st.write(summary)
+                    
+                    else:
+                        # Process each file separately
+                        st.markdown("### 📊 Individual File Analysis")
+                        
+                        for file_name, text in extracted_texts.items():
+                            with st.expander(f"📄 {file_name}", expanded=False):
+                                if analysis_type == "Classify Each Document":
+                                    with st.spinner(f"Classifying {file_name}..."):
+                                        result = processor.classify_document(text)
+                                    
+                                    col1, col2 = st.columns(2)
+                                    with col1:
+                                        st.metric("Type", result['label'].upper())
+                                    with col2:
+                                        st.metric("Confidence", f"{result['confidence']:.1%}")
+                                    
+                                    if show_metrics and 'all_scores' in result:
+                                        st.markdown("**Confidence Scores:**")
+                                        for cls, score in result['all_scores'].items():
+                                            st.write(f"- {cls.upper()}: {score:.2%}")
+                                
+                                elif analysis_type == "Extract Entities from All":
+                                    with st.spinner(f"Extracting from {file_name}..."):
+                                        entities = processor.extract_entities(text)
+                                    
+                                    if entities:
+                                        entity_groups = {}
+                                        for ent in entities:
+                                            tag = ent.get("entity_type", "OTHER")
+                                            if tag not in entity_groups:
+                                                entity_groups[tag] = []
+                                            entity_groups[tag].append(ent["text"])
+                                        
+                                        for tag, texts in entity_groups.items():
+                                            st.write(f"**{tag}:** {', '.join(set(texts))}")
+                                
+                                elif analysis_type == "Summarize All":
+                                    with st.spinner(f"Summarizing {file_name}..."):
+                                        summary = processor.summarize_document(text[:2000])
+                                    st.write(summary)
+                    
+                    st.success("✅ Analysis Complete!")
+                
+                except Exception as e:
+                    st.error(f"**❌ Analysis Failed:** {str(e)[:100]}")
 
 
 if __name__ == "__main__":
