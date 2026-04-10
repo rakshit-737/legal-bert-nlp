@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Legal BERT NLP – Advanced AI for legal document classification, named entity recognition, semantic similarity, and intelligent summarization." />
+  <title>Legal BERT NLP — AI for Legal Documents</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ── Design tokens ── */
+    :root {
+      --navy:   #0c2461;
+      --blue:   #1e3a8a;
+      --accent: #3b82f6;
+      --gold:   #d4a017;
+      --light:  #f8fafc;
+      --muted:  #64748b;
+      --border: #e2e8f0;
+      --white:  #ffffff;
+      --card-shadow: 0 4px 24px rgba(12,36,97,.10);
+      --radius: 12px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--white);
+      color: #1e293b;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Nav ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255,255,255,.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 5%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+    }
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--navy);
+      text-decoration: none;
+    }
+    .nav-brand .scales { font-size: 1.5rem; }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { text-decoration: none; color: var(--muted); font-size: .9rem; font-weight: 500; transition: color .2s; }
+    .nav-links a:hover { color: var(--navy); }
+    .nav-cta {
+      background: var(--navy);
+      color: var(--white) !important;
+      padding: .45rem 1.2rem;
+      border-radius: 6px;
+      transition: background .2s !important;
+    }
+    .nav-cta:hover { background: var(--blue) !important; color: var(--white) !important; }
+
+    /* ── Hero ── */
+    .hero {
+      background: linear-gradient(135deg, var(--navy) 0%, #1a3a6e 55%, #1e4080 100%);
+      color: var(--white);
+      padding: 6rem 5% 5rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h60v60H0z' fill='none'/%3E%3Ccircle cx='30' cy='30' r='1' fill='rgba(255,255,255,.04)'/%3E%3C/svg%3E") repeat;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.2);
+      border-radius: 100px;
+      padding: .3rem .9rem;
+      font-size: .8rem;
+      font-weight: 600;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+    }
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.4rem, 5vw, 3.8rem);
+      font-weight: 800;
+      line-height: 1.15;
+      max-width: 820px;
+      margin: 0 auto .8rem;
+    }
+    .hero h1 span { color: #93c5fd; }
+    .hero p {
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      color: rgba(255,255,255,.8);
+      max-width: 600px;
+      margin: 0 auto 2.5rem;
+    }
+    .hero-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      background: var(--white);
+      color: var(--navy);
+      font-weight: 700;
+      font-size: 1rem;
+      padding: .85rem 2rem;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: transform .15s, box-shadow .15s;
+      box-shadow: 0 4px 20px rgba(0,0,0,.2);
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,0,0,.25); }
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      background: transparent;
+      color: var(--white);
+      font-weight: 600;
+      font-size: 1rem;
+      padding: .85rem 2rem;
+      border-radius: 8px;
+      border: 1.5px solid rgba(255,255,255,.4);
+      text-decoration: none;
+      transition: border-color .15s, background .15s;
+    }
+    .btn-secondary:hover { border-color: rgba(255,255,255,.8); background: rgba(255,255,255,.08); }
+    .hero-stats {
+      display: flex;
+      gap: 2.5rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 3.5rem;
+      padding-top: 2.5rem;
+      border-top: 1px solid rgba(255,255,255,.15);
+    }
+    .stat { text-align: center; }
+    .stat-value { font-size: 2rem; font-weight: 800; }
+    .stat-label { font-size: .82rem; color: rgba(255,255,255,.65); text-transform: uppercase; letter-spacing: .04em; }
+
+    /* ── Sections ── */
+    section { padding: 5rem 5%; }
+    .section-tag {
+      display: inline-block;
+      background: #eff6ff;
+      color: var(--accent);
+      font-size: .78rem;
+      font-weight: 700;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      padding: .3rem .8rem;
+      border-radius: 100px;
+      margin-bottom: 1rem;
+    }
+    h2.section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 3vw, 2.5rem);
+      color: var(--navy);
+      line-height: 1.2;
+      margin-bottom: .75rem;
+    }
+    .section-sub {
+      color: var(--muted);
+      font-size: 1.05rem;
+      max-width: 580px;
+      margin-bottom: 3rem;
+    }
+    .center { text-align: center; }
+    .center .section-sub { margin-left: auto; margin-right: auto; }
+
+    /* ── Feature cards ── */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+      gap: 1.5rem;
+    }
+    .feature-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2rem;
+      transition: box-shadow .2s, transform .2s;
+    }
+    .feature-card:hover { box-shadow: var(--card-shadow); transform: translateY(-3px); }
+    .feature-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    .icon-blue  { background: #eff6ff; }
+    .icon-purple{ background: #f5f3ff; }
+    .icon-teal  { background: #f0fdfa; }
+    .icon-amber { background: #fffbeb; }
+    .feature-card h3 { font-size: 1.1rem; font-weight: 700; color: var(--navy); margin-bottom: .5rem; }
+    .feature-card p  { font-size: .92rem; color: var(--muted); line-height: 1.65; }
+    .feature-tag {
+      display: inline-block;
+      margin-top: .85rem;
+      font-size: .75rem;
+      font-weight: 600;
+      padding: .2rem .65rem;
+      border-radius: 4px;
+    }
+    .tag-blue   { background: #dbeafe; color: #1d4ed8; }
+    .tag-purple { background: #ede9fe; color: #7c3aed; }
+    .tag-teal   { background: #ccfbf1; color: #0f766e; }
+    .tag-amber  { background: #fef3c7; color: #b45309; }
+
+    /* ── How it works ── */
+    .how-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 2rem;
+      counter-reset: step-counter;
+    }
+    .how-step {
+      position: relative;
+      padding: 2rem;
+      background: var(--light);
+      border-radius: var(--radius);
+    }
+    .how-step::before {
+      counter-increment: step-counter;
+      content: counter(step-counter);
+      position: absolute;
+      top: -16px;
+      left: 2rem;
+      background: var(--navy);
+      color: var(--white);
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .8rem;
+      font-weight: 800;
+    }
+    .how-step h3 { font-size: 1rem; font-weight: 700; color: var(--navy); margin-bottom: .5rem; }
+    .how-step p  { font-size: .88rem; color: var(--muted); }
+
+    /* ── Demo placeholder ── */
+    .demo-section { background: var(--light); }
+    .demo-window {
+      max-width: 860px;
+      margin: 0 auto;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: var(--card-shadow);
+    }
+    .demo-bar {
+      background: #f1f5f9;
+      border-bottom: 1px solid var(--border);
+      padding: .7rem 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: .45rem;
+    }
+    .dot { width: 12px; height: 12px; border-radius: 50%; }
+    .dot-red   { background: #ef4444; }
+    .dot-amber { background: #f59e0b; }
+    .dot-green { background: #10b981; }
+    .demo-url { margin-left: .8rem; font-size: .78rem; color: var(--muted); }
+    .demo-inner {
+      padding: 2.5rem;
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 2rem;
+      min-height: 260px;
+    }
+    .demo-sidebar { background: var(--light); border-radius: 8px; padding: 1.2rem; }
+    .demo-sidebar .ds-title { font-size: .75rem; font-weight: 700; color: var(--navy); text-transform: uppercase; letter-spacing: .06em; margin-bottom: .8rem; }
+    .ds-item {
+      padding: .45rem .7rem;
+      border-radius: 6px;
+      font-size: .8rem;
+      color: var(--muted);
+      margin-bottom: .3rem;
+      cursor: default;
+    }
+    .ds-item.active { background: var(--navy); color: var(--white); font-weight: 600; }
+    .demo-main { display: flex; flex-direction: column; gap: 1rem; }
+    .demo-textarea {
+      background: var(--light);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      height: 90px;
+      padding: .8rem;
+      font-size: .78rem;
+      color: #94a3b8;
+    }
+    .demo-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      background: #d1fae5;
+      color: #065f46;
+      font-size: .78rem;
+      font-weight: 600;
+      padding: .35rem .75rem;
+      border-radius: 100px;
+    }
+    .demo-result { background: var(--light); border-radius: 8px; padding: 1rem; }
+    .dr-label { font-size: .7rem; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; margin-bottom: .3rem; }
+    .dr-value { font-size: 1.3rem; font-weight: 800; color: var(--navy); }
+    .dr-conf  { font-size: .8rem; color: #10b981; font-weight: 600; }
+
+    /* ── Quickstart ── */
+    .quickstart-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    @media (max-width: 640px) { .quickstart-grid { grid-template-columns: 1fr; } }
+    .qs-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2rem;
+    }
+    .qs-card h3 { font-size: 1rem; font-weight: 700; color: var(--navy); margin-bottom: 1rem; display: flex; align-items: center; gap: .5rem; }
+    pre, code {
+      font-family: 'Fira Code', 'Courier New', monospace;
+      font-size: .82rem;
+    }
+    pre {
+      background: #0f172a;
+      color: #e2e8f0;
+      border-radius: 8px;
+      padding: 1rem 1.2rem;
+      overflow-x: auto;
+      line-height: 1.7;
+    }
+    .qs-steps { list-style: none; counter-reset: qs-counter; }
+    .qs-steps li {
+      counter-increment: qs-counter;
+      padding: .5rem 0 .5rem 2.2rem;
+      position: relative;
+      font-size: .9rem;
+      color: #374151;
+      border-bottom: 1px solid var(--border);
+    }
+    .qs-steps li:last-child { border-bottom: none; }
+    .qs-steps li::before {
+      content: counter(qs-counter);
+      position: absolute;
+      left: 0;
+      top: .5rem;
+      background: var(--navy);
+      color: var(--white);
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .7rem;
+      font-weight: 800;
+    }
+    .qs-steps a { color: var(--accent); font-weight: 600; text-decoration: none; }
+    .qs-steps a:hover { text-decoration: underline; }
+    .qs-note {
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-radius: 8px;
+      padding: .75rem 1rem;
+      font-size: .82rem;
+      color: #92400e;
+      margin-top: 1rem;
+    }
+
+    /* ── CTA banner ── */
+    .cta-banner {
+      background: linear-gradient(135deg, var(--navy) 0%, #2563eb 100%);
+      color: var(--white);
+      text-align: center;
+      padding: 5rem 5%;
+    }
+    .cta-banner h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 3vw, 2.5rem);
+      margin-bottom: 1rem;
+    }
+    .cta-banner p { color: rgba(255,255,255,.8); font-size: 1.05rem; max-width: 500px; margin: 0 auto 2rem; }
+
+    /* ── Footer ── */
+    footer {
+      background: #0f172a;
+      color: rgba(255,255,255,.55);
+      padding: 3rem 5%;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    .footer-brand { font-size: 1rem; font-weight: 700; color: var(--white); margin-bottom: .5rem; }
+    .footer-desc  { font-size: .82rem; max-width: 260px; line-height: 1.65; }
+    .footer-links { display: flex; flex-direction: column; gap: .5rem; }
+    .footer-links a { color: rgba(255,255,255,.55); font-size: .85rem; text-decoration: none; transition: color .2s; }
+    .footer-links a:hover { color: var(--white); }
+    .footer-bottom {
+      width: 100%;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(255,255,255,.08);
+      font-size: .78rem;
+      text-align: center;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .demo-inner { grid-template-columns: 1fr; }
+      .demo-sidebar { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Navigation ── -->
+<nav>
+  <a href="#" class="nav-brand">
+    <span class="scales">⚖️</span> Legal BERT NLP
+  </a>
+  <ul class="nav-links">
+    <li><a href="#features">Features</a></li>
+    <li><a href="#how-it-works">How it works</a></li>
+    <li><a href="#quickstart">Quick start</a></li>
+    <li><a href="https://github.com/rakshit-737/legal-bert-nlp" target="_blank" rel="noopener">GitHub</a></li>
+    <!-- ⚠️ UPDATE THIS URL once your Streamlit app is live -->
+    <li><a href="https://legal-bert-nlp.streamlit.app" target="_blank" rel="noopener" class="nav-cta">Launch App →</a></li>
+  </ul>
+</nav>
+
+<!-- ── Hero ── -->
+<section class="hero">
+  <div class="hero-badge">⚡ Powered by BERT &amp; PyTorch</div>
+  <h1>
+    <span>AI-powered NLP</span><br />
+    for Legal Documents
+  </h1>
+  <p>
+    Classify documents, extract legal entities, compare contracts, and generate intelligent summaries—all with a fine-tuned BERT model trained on legal text.
+  </p>
+  <div class="hero-buttons">
+    <!-- ⚠️ UPDATE THIS URL once your Streamlit app is live -->
+    <a href="https://legal-bert-nlp.streamlit.app" target="_blank" rel="noopener" class="btn-primary">
+      🚀 Launch Live App
+    </a>
+    <a href="https://github.com/rakshit-737/legal-bert-nlp" target="_blank" rel="noopener" class="btn-secondary">
+      View on GitHub
+    </a>
+  </div>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-value">92%</div><div class="stat-label">Classification accuracy</div></div>
+    <div class="stat"><div class="stat-value">4</div><div class="stat-label">Analysis modes</div></div>
+    <div class="stat"><div class="stat-value">BERT</div><div class="stat-label">Model backbone</div></div>
+    <div class="stat"><div class="stat-value">~0.2s</div><div class="stat-label">Inference per doc</div></div>
+  </div>
+</section>
+
+<!-- ── Features ── -->
+<section id="features">
+  <div class="center">
+    <span class="section-tag">Capabilities</span>
+    <h2 class="section-title">Everything you need to process legal text</h2>
+    <p class="section-sub">Four specialized NLP pipelines, all backed by fine-tuned legal BERT models with production-grade confidence scoring.</p>
+  </div>
+  <div class="features-grid">
+
+    <div class="feature-card">
+      <div class="feature-icon icon-blue">📄</div>
+      <h3>Document Classification</h3>
+      <p>Automatically identify document type—contract, court case, appeal, or statute—with confidence scores and full probability distribution across all classes.</p>
+      <span class="feature-tag tag-blue">~92% accuracy</span>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon icon-purple">🔍</div>
+      <h3>Named Entity Recognition</h3>
+      <p>Extract people, judges, organizations, dates, and legal clauses from any legal text using BIO-tagged token-level predictions with per-entity confidence.</p>
+      <span class="feature-tag tag-purple">5 entity types</span>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon icon-teal">🔗</div>
+      <h3>Semantic Similarity</h3>
+      <p>Compare two documents or search a corpus to find duplicate clauses, related cases, or parallel contracts using sentence-embedding cosine similarity.</p>
+      <span class="feature-tag tag-teal">Sentence BERT</span>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon icon-amber">📊</div>
+      <h3>Intelligent Summarization</h3>
+      <p>Generate structured summaries of long legal documents highlighting document type, key entities, important clauses, and metadata—in seconds.</p>
+      <span class="feature-tag tag-amber">Key clause extraction</span>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── How it works ── -->
+<section id="how-it-works" style="background: var(--light);">
+  <div class="center">
+    <span class="section-tag">Process</span>
+    <h2 class="section-title">How it works</h2>
+    <p class="section-sub">From raw text to structured insight in four steps.</p>
+  </div>
+  <div class="how-grid">
+    <div class="how-step">
+      <h3>Paste or upload your document</h3>
+      <p>Enter raw legal text or upload a plain-text file. PDF extraction is also supported via pdfplumber.</p>
+    </div>
+    <div class="how-step">
+      <h3>Choose your analysis task</h3>
+      <p>Select from Classification, NER, Similarity, Summarization, or Batch Processing in the sidebar.</p>
+    </div>
+    <div class="how-step">
+      <h3>BERT inference runs on-device</h3>
+      <p>The fine-tuned legal BERT model processes your text locally—no data leaves your environment.</p>
+    </div>
+    <div class="how-step">
+      <h3>Structured results returned</h3>
+      <p>View confidence scores, entity breakdowns, similarity rankings, and summaries—exportable as CSV or JSON.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── Demo placeholder ── -->
+<section class="demo-section" id="demo">
+  <div class="center">
+    <span class="section-tag">Demo</span>
+    <h2 class="section-title">See it in action</h2>
+    <p class="section-sub">Run the live Streamlit app directly in your browser—no installation required.</p>
+  </div>
+  <div class="demo-window">
+    <div class="demo-bar">
+      <div class="dot dot-red"></div>
+      <div class="dot dot-amber"></div>
+      <div class="dot dot-green"></div>
+      <span class="demo-url">⚖️ Legal BERT NLP — Document Classification</span>
+    </div>
+    <div class="demo-inner">
+      <div class="demo-sidebar">
+        <div class="ds-title">Analysis Task</div>
+        <div class="ds-item active">📄 Document Classification</div>
+        <div class="ds-item">🔍 Named Entity Recognition</div>
+        <div class="ds-item">🔗 Similarity Analysis</div>
+        <div class="ds-item">📊 Document Summarization</div>
+        <div class="ds-item">⚡ Batch Processing</div>
+      </div>
+      <div class="demo-main">
+        <div class="demo-textarea">
+          This Agreement is entered into as of January 1, 2025, between ABC Corporation, a Delaware corporation ("Company"), and John Smith ("Consultant")…
+        </div>
+        <div>
+          <span class="demo-chip">✅ Analysis complete</span>
+        </div>
+        <div class="demo-result">
+          <div class="dr-label">Document Type</div>
+          <div class="dr-value">CONTRACT</div>
+          <div class="dr-conf">⬆ 96.2% confidence</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div style="text-align:center; margin-top:2rem;">
+    <!-- ⚠️ UPDATE THIS URL once your Streamlit app is live -->
+    <a href="https://legal-bert-nlp.streamlit.app" target="_blank" rel="noopener" class="btn-primary" style="background:var(--navy);color:var(--white);">
+      🚀 Open Live App
+    </a>
+  </div>
+</section>
+
+<!-- ── Quick start ── -->
+<section id="quickstart">
+  <div class="center">
+    <span class="section-tag">Get started</span>
+    <h2 class="section-title">Deploy in minutes</h2>
+    <p class="section-sub">Run locally or deploy to Streamlit Cloud for a shareable public URL—free forever.</p>
+  </div>
+  <div class="quickstart-grid">
+    <div class="qs-card">
+      <h3>🖥️ Run locally</h3>
+      <pre><code># 1. Clone the repo
+git clone https://github.com/rakshit-737/legal-bert-nlp.git
+cd legal-bert-nlp
+
+# 2. Install dependencies
+pip install -r requirements.txt
+
+# 3. Launch the app
+streamlit run app/streamlit_app.py</code></pre>
+      <div class="qs-note">
+        💡 Python 3.9+ recommended. GPU optional but speeds up inference significantly.
+      </div>
+    </div>
+
+    <div class="qs-card">
+      <h3>☁️ Deploy to Streamlit Cloud</h3>
+      <ol class="qs-steps">
+        <li>Fork or push this repo to your GitHub account.</li>
+        <li>Go to <a href="https://share.streamlit.io" target="_blank" rel="noopener">share.streamlit.io</a> and sign in with GitHub.</li>
+        <li>Click <strong>"Deploy an app"</strong>, select this repo, set <strong>main file</strong> to <code>app/streamlit_app.py</code>.</li>
+        <li>Click <strong>"Deploy!"</strong> and wait ~2 min. Your public URL will appear.</li>
+        <li>Update the app URL in <code>docs/index.html</code> and <code>README.md</code>.</li>
+      </ol>
+      <div class="qs-note">
+        🔒 No secrets required for the base demo. All ML runs in the Streamlit Cloud container.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA ── -->
+<section class="cta-banner">
+  <h2>Ready to analyze your legal documents?</h2>
+  <p>Launch the app in your browser—no installation, no sign-up, no cost.</p>
+  <!-- ⚠️ UPDATE THIS URL once your Streamlit app is live -->
+  <a href="https://legal-bert-nlp.streamlit.app" target="_blank" rel="noopener" class="btn-primary">
+    🚀 Launch Legal BERT NLP →
+  </a>
+</section>
+
+<!-- ── Footer ── -->
+<footer>
+  <div>
+    <div class="footer-brand">⚖️ Legal BERT NLP</div>
+    <div class="footer-desc">Advanced NLP for legal document classification, NER, semantic similarity, and summarization—powered by fine-tuned BERT.</div>
+  </div>
+  <div>
+    <div class="footer-brand" style="font-size:.85rem;margin-bottom:.6rem;">Project</div>
+    <div class="footer-links">
+      <a href="https://github.com/rakshit-737/legal-bert-nlp" target="_blank" rel="noopener">GitHub Repository</a>
+      <a href="https://github.com/rakshit-737/legal-bert-nlp/blob/main/README.md" target="_blank" rel="noopener">Documentation</a>
+      <a href="https://github.com/rakshit-737/legal-bert-nlp/issues" target="_blank" rel="noopener">Report an Issue</a>
+    </div>
+  </div>
+  <div>
+    <div class="footer-brand" style="font-size:.85rem;margin-bottom:.6rem;">Tech stack</div>
+    <div class="footer-links">
+      <a href="https://huggingface.co/nlpaueb/legal-bert-base-uncased" target="_blank" rel="noopener">Legal BERT (HuggingFace)</a>
+      <a href="https://streamlit.io" target="_blank" rel="noopener">Streamlit</a>
+      <a href="https://pytorch.org" target="_blank" rel="noopener">PyTorch</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    Built with ❤️ using BERT + Streamlit &nbsp;·&nbsp;
+    <a href="https://github.com/rakshit-737/legal-bert-nlp" style="color:rgba(255,255,255,.55);" target="_blank" rel="noopener">rakshit-737/legal-bert-nlp</a>
+  </div>
+</footer>
+
+</body>
+</html>

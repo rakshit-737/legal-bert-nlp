@@ -1,12 +1,16 @@
-# ⚖️ Legal BERT NLP - Complete Project
+# ⚖️ Legal BERT NLP
 
-**Advanced NLP for legal documents using BERT-based models**
+**Advanced AI for legal documents — Classification · NER · Similarity · Summarization**
 
-> Fine-tuned BERT models for legal document classification, Named Entity Recognition (NER), semantic similarity analysis, and automation.
+> Fine-tuned BERT models purpose-built for legal document intelligence: classify documents, extract named entities, compute semantic similarity, and generate intelligent summaries.
 
-![Status](https://img.shields.io/badge/status-active-success)
-![Python](https://img.shields.io/badge/python-3.9%2B-blue)
-![CUDA](https://img.shields.io/badge/GPU-CUDA%20Ready-brightgreen)
+> **⚠️ After deploying:** update the badge URLs below with your actual Streamlit app URL and GitHub username.
+
+[![Live App](https://img.shields.io/badge/Streamlit-Live%20App-FF4B4B?logo=streamlit&logoColor=white)](https://legal-bert-nlp.streamlit.app)
+[![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Landing%20Page-0c2461?logo=github)](https://rakshit-737.github.io/legal-bert-nlp)
+[![Status](https://img.shields.io/badge/status-active-success)](.)
+[![Python](https://img.shields.io/badge/python-3.9%2B-blue)](.)
+[![CUDA](https://img.shields.io/badge/GPU-CUDA%20Ready-brightgreen)](.)
 
 ---
 
@@ -421,47 +425,52 @@ processor.calculate_similarity(text1, text2)
 
 ## 🚀 Deployment
 
-### Option 1: Streamlit (Easiest)
+### Run locally
 
 ```bash
+# 1. Clone the repo
+git clone https://github.com/rakshit-737/legal-bert-nlp.git
+cd legal-bert-nlp
+
+# 2. Install dependencies (Python 3.9+)
+pip install -r requirements.txt
+
+# 3. Launch the Streamlit app
 streamlit run app/streamlit_app.py
+# → Open http://localhost:8501
 ```
 
-- Accessible at `http://localhost:8501`
-- No code changes needed
-- Perfect for demos and prototypes
+---
 
-### Option 2: FastAPI
+### Deploy to Streamlit Cloud (free, public URL)
 
-Create `app/api.py`:
+1. Push this repo to your GitHub account.
+2. Go to **https://share.streamlit.io/** and sign in with GitHub.
+3. Click **"Deploy an app"**.
+4. Fill in:
+   - **Repository**: `YOUR_USERNAME/legal-bert-nlp`
+   - **Branch**: `main`
+   - **Main file path**: `app/streamlit_app.py`
+5. Click **"Deploy!"** — your app will be live at  
+   `https://YOUR_USERNAME-legal-bert-nlp-app-streamlit-app-XXXXX.streamlit.app`
+6. **Update the app URL** in:
+   - `docs/index.html` — replace all `https://legal-bert-nlp.streamlit.app` occurrences
+   - `README.md` badge at the top
 
-```python
-from fastapi import FastAPI
-from inference.processor import LegalDocumentProcessor
+---
 
-app = FastAPI()
-processor = LegalDocumentProcessor()
+### Enable GitHub Pages (landing page)
 
-@app.post("/classify/")
-def classify_document(text: str):
-    result = processor.classify_document(text)
-    return result
+1. In your repository, go to **Settings → Pages**.
+2. Under **Source**, choose **Deploy from a branch**.
+3. Branch: `main` · Folder: `/docs`.
+4. Click **Save** — your site will be live at  
+   `https://YOUR_USERNAME.github.io/legal-bert-nlp`
+5. Update `docs/_config.yml`: set `url` and `repository` to your actual values.
 
-@app.post("/extract_entities/")
-def extract_entities(text: str):
-    result = processor.extract_entities(text)
-    return result
-```
+---
 
-Run:
-```bash
-pip install fastapi uvicorn
-uvicorn app.api:app --reload
-```
-
-### Option 3: Docker
-
-Create `Dockerfile`:
+### Option: Docker
 
 ```dockerfile
 FROM python:3.9-slim
@@ -470,13 +479,38 @@ COPY requirements.txt .
 RUN pip install -r requirements.txt
 COPY . .
 EXPOSE 8501
-CMD ["streamlit", "run", "app/streamlit_app.py"]
+CMD ["streamlit", "run", "app/streamlit_app.py", "--server.port=8501", "--server.address=0.0.0.0"]
 ```
 
-Build & run:
 ```bash
 docker build -t legal-bert .
 docker run -p 8501:8501 legal-bert
+```
+
+---
+
+### Option: FastAPI
+
+```python
+# app/api.py
+from fastapi import FastAPI
+from inference.processor import LegalDocumentProcessor
+
+app = FastAPI()
+processor = LegalDocumentProcessor()
+
+@app.post("/classify/")
+def classify_document(text: str):
+    return processor.classify_document(text)
+
+@app.post("/extract_entities/")
+def extract_entities(text: str):
+    return processor.extract_entities(text)
+```
+
+```bash
+pip install fastapi uvicorn
+uvicorn app.api:app --reload
 ```
 
 ---
