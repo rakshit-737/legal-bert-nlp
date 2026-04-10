@@ -22,197 +22,13 @@ from preprocessing.text_cleaner import TextCleaner
 
 # Page configuration with premium styling
 st.set_page_config(
-<<<<<<< HEAD
-    page_title="Legal BERT NLP",
-    page_icon="⚖️",
-=======
     page_title="⚖️ Legal BERT NLP - Professional Document Analysis",
     page_icon="📜",
->>>>>>> origin/main
     layout="wide",
     initial_sidebar_state="expanded",
     menu_items={"About": "Legal BERT NLP - Advanced NLP for Legal Documents"}
 )
 
-<<<<<<< HEAD
-# ── Design system ──────────────────────────────────────────────────────────────
-st.markdown("""
-<style>
-  /* ── Tokens ── */
-  :root {
-    --navy:    #0c2461;
-    --blue:    #1e3a8a;
-    --accent:  #3b82f6;
-    --success: #10b981;
-    --warning: #f59e0b;
-    --error:   #ef4444;
-    --muted:   #64748b;
-    --border:  #e2e8f0;
-    --surface: #f8fafc;
-  }
-
-  /* ── Global type ── */
-  html, body, [class*="css"] {
-    font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
-  }
-
-  /* ── Top header bar ── */
-  .app-header {
-    background: linear-gradient(135deg, #0c2461 0%, #1e3a8a 100%);
-    color: #fff;
-    padding: 2rem 2.5rem 1.75rem;
-    border-radius: 12px;
-    margin-bottom: 1.5rem;
-  }
-  .app-header h1 {
-    font-size: 2rem;
-    font-weight: 800;
-    letter-spacing: -.5px;
-    margin: 0;
-    line-height: 1.2;
-  }
-  .app-header p {
-    font-size: .95rem;
-    color: rgba(255,255,255,.75);
-    margin: .35rem 0 0;
-  }
-
-  /* ── Section titles ── */
-  .sec-title {
-    font-size: 1.45rem;
-    font-weight: 700;
-    color: var(--navy);
-    border-left: 4px solid var(--accent);
-    padding-left: .75rem;
-    margin: .5rem 0 1.25rem;
-    line-height: 1.25;
-  }
-
-  /* ── Info callout ── */
-  .callout {
-    background: #eff6ff;
-    border-left: 4px solid var(--accent);
-    border-radius: 8px;
-    padding: .85rem 1.1rem;
-    font-size: .88rem;
-    color: #1e40af;
-    margin-bottom: 1.25rem;
-    line-height: 1.55;
-  }
-
-  /* ── Result card ── */
-  .result-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 1.25rem 1.5rem;
-    margin: .75rem 0;
-  }
-  .result-label {
-    font-size: .72rem;
-    font-weight: 700;
-    letter-spacing: .08em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: .3rem;
-  }
-  .result-value {
-    font-size: 1.6rem;
-    font-weight: 800;
-    color: var(--navy);
-    line-height: 1.1;
-  }
-  .result-sub {
-    font-size: .82rem;
-    color: var(--success);
-    font-weight: 600;
-    margin-top: .2rem;
-  }
-
-  /* ── Entity chip ── */
-  .entity-chip {
-    display: inline-flex;
-    align-items: center;
-    background: #eff6ff;
-    border: 1px solid #bfdbfe;
-    color: #1d4ed8;
-    font-size: .8rem;
-    font-weight: 600;
-    padding: .25rem .7rem;
-    border-radius: 100px;
-    margin: .2rem;
-  }
-
-  /* ── Entity group box ── */
-  .entity-group {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 1rem 1.2rem;
-    margin-bottom: .75rem;
-  }
-  .entity-group-title {
-    font-size: .78rem;
-    font-weight: 700;
-    letter-spacing: .06em;
-    text-transform: uppercase;
-    color: var(--navy);
-    margin-bottom: .6rem;
-  }
-
-  /* ── Empty state ── */
-  .empty-state {
-    text-align: center;
-    padding: 3rem 2rem;
-    color: var(--muted);
-    background: var(--surface);
-    border: 2px dashed var(--border);
-    border-radius: 12px;
-    margin: 1.5rem 0;
-  }
-  .empty-state .es-icon { font-size: 2.5rem; margin-bottom: .75rem; }
-  .empty-state h3 { font-size: 1rem; font-weight: 600; color: #374151; margin-bottom: .4rem; }
-  .empty-state p  { font-size: .85rem; line-height: 1.55; max-width: 380px; margin: 0 auto; }
-
-  /* ── Status pill ── */
-  .pill-success {
-    display: inline-flex;
-    align-items: center;
-    gap: .35rem;
-    background: #d1fae5;
-    color: #065f46;
-    font-size: .8rem;
-    font-weight: 600;
-    padding: .3rem .85rem;
-    border-radius: 100px;
-    margin-bottom: 1rem;
-  }
-
-  /* ── Sidebar tweaks ── */
-  [data-testid="stSidebar"] { background: #f8fafc !important; }
-  .sidebar-brand {
-    background: linear-gradient(135deg, #0c2461, #1e3a8a);
-    color: #fff;
-    border-radius: 8px;
-    padding: 1rem 1.1rem;
-    margin-bottom: 1.25rem;
-    font-weight: 700;
-    font-size: .95rem;
-    text-align: center;
-  }
-  .sidebar-brand small {
-    display: block;
-    font-size: .72rem;
-    font-weight: 400;
-    color: rgba(255,255,255,.7);
-    margin-top: .2rem;
-  }
-
-  /* ── Hide Streamlit default footer/menu ── */
-  #MainMenu { visibility: hidden; }
-  footer    { visibility: hidden; }
-  header    { visibility: hidden; }
-=======
 # Prevent rerun on page load
 if 'last_tab' not in st.session_state:
     st.session_state.last_tab = None
@@ -620,7 +436,6 @@ st.markdown("""
             padding: 1.5em;
         }
     }
->>>>>>> origin/main
 </style>
 """, unsafe_allow_html=True)
 
@@ -700,13 +515,6 @@ def load_models():
 
 
 def main():
-<<<<<<< HEAD
-    # ── App header ──
-    st.markdown(
-        "<div class='app-header'>"
-        "<h1>⚖️ Legal BERT NLP</h1>"
-        "<p>AI-powered analysis for legal documents — Classification · NER · Similarity · Summarization</p>"
-=======
     # Header
     st.markdown(
         "<h1 class='main-header'>⚖️ Legal BERT NLP Platform</h1>",
@@ -716,45 +524,9 @@ def main():
     st.markdown(
         "<div class='subheader-text'>"
         "Professional AI-Powered Legal Document Analysis"
->>>>>>> origin/main
         "</div>",
         unsafe_allow_html=True,
     )
-<<<<<<< HEAD
-
-    # ── Sidebar ──
-    st.sidebar.markdown(
-        "<div class='sidebar-brand'>⚖️ Legal BERT NLP<small>Advanced NLP for legal documents</small></div>",
-        unsafe_allow_html=True,
-    )
-
-    st.sidebar.markdown("#### 🗂️ Analysis Task")
-    task = st.sidebar.radio(
-        "Select task:",
-        ["📄 Document Classification", "🔍 Named Entity Recognition",
-         "🔗 Similarity Analysis", "📊 Document Summarization",
-         "⚡ Batch Processing"],
-        label_visibility="collapsed",
-    )
-
-    st.sidebar.divider()
-    st.sidebar.markdown("#### ⚙️ Display Options")
-    show_metrics = st.sidebar.checkbox("Show detailed metrics", value=True,
-                                       help="Display word count, reading time, and other stats")
-    show_probabilities = st.sidebar.checkbox("Show confidence scores", value=True,
-                                             help="Display per-class confidence breakdown")
-
-    st.sidebar.divider()
-    st.sidebar.markdown("#### 📋 System Info")
-    st.sidebar.markdown(
-        f"- **Base model:** `{config.DEFAULT_MODEL}`\n"
-        f"- **Framework:** PyTorch + Transformers\n"
-        f"- **Hardware:** {'🚀 GPU (CUDA)' if torch.cuda.is_available() else '💻 CPU'}\n"
-        f"- **Doc types:** {len(config.CLASSIFICATION_LABELS)}"
-    )
-
-    # ── Load models ──
-=======
     
     st.markdown(
         "<div style='text-align: center; color: #6b7280; font-size: 0.95em; margin-bottom: 2em;'>"
@@ -788,19 +560,9 @@ def main():
     st.sidebar.markdown("---")
     st.sidebar.markdown("### 📋 System Information")
     
->>>>>>> origin/main
     try:
         with st.spinner("Loading AI models…"):
             processor = load_models()
-<<<<<<< HEAD
-        st.sidebar.success("✅ Models ready")
-    except Exception as e:
-        st.sidebar.error(f"Model load error: {str(e)[:60]}")
-        st.error(
-            "**Unable to load models.** "
-            "Run `pip install -r requirements.txt` and restart."
-        )
-=======
         
         st.sidebar.success("✅ Models loaded")
         st.sidebar.markdown(f"""
@@ -815,17 +577,12 @@ def main():
         st.sidebar.error(f"⚠️ Model loading failed")
         st.error(f"**Unable to load models:** {str(e)[:60]}")
         st.info("Please ensure all dependencies are installed: `pip install -r requirements.txt`")
->>>>>>> origin/main
         return
 
     # ── Task routing ──
     if task == "📄 Document Classification":
-<<<<<<< HEAD
-        document_classification(processor, show_metrics, show_probabilities)
-=======
         document_classification(processor, show_metrics, show_probabilities, show_raw_output)
     
->>>>>>> origin/main
     elif task == "🔍 Named Entity Recognition":
         named_entity_recognition(processor, show_metrics)
     elif task == "🔗 Similarity Analysis":
@@ -839,7 +596,7 @@ def main():
         multi_file_upload(processor, show_metrics)
 
 
-def document_classification(processor, show_metrics, show_probabilities):
+def document_classification(processor, show_metrics, show_probabilities, show_raw_output=False):
     """Document classification interface - identify document type"""
     st.markdown("<div class='sec-title'>📄 Document Classification</div>", unsafe_allow_html=True)
 
