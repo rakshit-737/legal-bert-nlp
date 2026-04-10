@@ -16,6 +16,8 @@ matplotlib
 seaborn
 pdfplumber
 pytesseract
+PyPDF2
+python-docx
 # scikit-learn is only used for TF-IDF fallback + some eval scripts; avoid it on Streamlit Cloud
 # because it may require compilation under newer Python versions.
 # scikit-learn
